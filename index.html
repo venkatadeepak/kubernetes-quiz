@@ -124,7 +124,10 @@
             document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}!`;
         }
         
-        loadQuestions();
+        // Ensure loadQuestions is called when the DOM is fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            loadQuestions();
+        });
     </script>
 </body>
 </html>
