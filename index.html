@@ -7,126 +7,240 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow-y: auto;
+            background-color: #f5f5f5;
         }
-        .container {
-            background: white;
+        .question {
+            background-color: white;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        h2 {
-            text-align: center;
-            color: #333;
-        {
-            margin-bottom: 15px;
-        }
-        .correct {
-            background-color: #c8e6c9;
-        }
-        .incorrect {
-            background-color: #ffcdd2;
+        .options {
+            margin-left: 20px;
         }
         .explanation {
             display: none;
-            font-size: 14px;
-            color: #333;
-        }
-        #result {
-            font-weight: bold;
-            margin-top: 20px;
-            text-align: center;
-        }
-        button {
-            display: block;
-            width: 100%;
+            margin-top: 10px;
             padding: 10px;
-            background: #007BFF;
+            background-color: #ffe6e6;
+            border-radius: 4px;
+        }
+        #submitBtn {
+            background-color: #87CEEB;
             color: white;
+            padding: 12px 24px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            display: block;
+            margin: 20px auto;
+            opacity: 0.5;
         }
-        button:hover {
-            background: #0056b3;
+        #submitBtn:enabled {
+            opacity: 1;
+        }
+        #score {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Kubernetes Basic Quiz</h2>
-        <form id="quizForm">
-            <div id="questionsContainer"></div>
-            <button type="button" onclick="calculateScore()">Submit</button>
-        </form>
-        <p id="result"></p>
+    <h1>Kubernetes Quiz</h1>
+    <div id="quiz">
+        <div class="question">
+            <p>1. What is Kubernetes?</p>
+            <div class="options">
+                <input type="radio" name="q1" value="a"> A) A programming language<br>
+                <input type="radio" name="q1" value="b"> B) A container orchestration platform<br>
+                <input type="radio" name="q1" value="c"> C) A database management system<br>
+                <input type="radio" name="q1" value="d"> D) A web server
+            </div>
+            <div class="explanation">
+                Kubernetes is a container orchestration platform that automates the deployment, scaling, and management of containerized applications.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>2. What is a Pod in Kubernetes?</p>
+            <div class="options">
+                <input type="radio" name="q2" value="a"> A) A single container<br>
+                <input type="radio" name="q2" value="b"> B) The smallest deployable unit that can contain one or more containers<br>
+                <input type="radio" name="q2" value="c"> C) A storage volume<br>
+                <input type="radio" name="q2" value="d"> D) A network interface
+            </div>
+            <div class="explanation">
+                A Pod is the smallest deployable unit in Kubernetes that can contain one or more containers sharing the same network namespace and storage volumes.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>3. What is a Kubernetes Service?</p>
+            <div class="options">
+                <input type="radio" name="q3" value="a"> A) A web service running in a container<br>
+                <input type="radio" name="q3" value="b"> B) A load balancer<br>
+                <input type="radio" name="q3" value="c"> C) An abstraction that defines a logical set of Pods and a policy to access them<br>
+                <input type="radio" name="q3" value="d"> D) A monitoring tool
+            </div>
+            <div class="explanation">
+                A Service is an abstraction that defines a logical set of Pods and a policy by which to access them, enabling loose coupling between dependent Pods.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>4. What is a Deployment in Kubernetes?</p>
+            <div class="options">
+                <input type="radio" name="q4" value="a"> A) The process of installing Kubernetes<br>
+                <input type="radio" name="q4" value="b"> B) A declarative way to manage a set of Pods and ReplicaSets<br>
+                <input type="radio" name="q4" value="c"> C) A way to deploy containers directly<br>
+                <input type="radio" name="q4" value="d"> D) A networking configuration
+            </div>
+            <div class="explanation">
+                A Deployment is a declarative way to manage a set of Pods and ReplicaSets, providing declarative updates for Pods and ReplicaSets.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>5. What is a ConfigMap?</p>
+            <div class="options">
+                <input type="radio" name="q5" value="a"> A) A map of cluster nodes<br>
+                <input type="radio" name="q5" value="b"> B) A storage object for sensitive data<br>
+                <input type="radio" name="q5" value="c"> C) An API object used to store non-confidential data in key-value pairs<br>
+                <input type="radio" name="q5" value="d"> D) A network routing table
+            </div>
+            <div class="explanation">
+                ConfigMap is an API object used to store non-confidential data in key-value pairs, allowing you to decouple configuration artifacts from image content.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>6. What is a Namespace in Kubernetes?</p>
+            <div class="options">
+                <input type="radio" name="q6" value="a"> A) A way to organize objects in a cluster<br>
+                <input type="radio" name="q6" value="b"> B) A type of container<br>
+                <input type="radio" name="q6" value="c"> C) A network protocol<br>
+                <input type="radio" name="q6" value="d"> D) A storage volume
+            </div>
+            <div class="explanation">
+                A Namespace is a way to organize objects in a cluster, providing a scope for names and allowing you to divide cluster resources between multiple users.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>7. What is a StatefulSet?</p>
+            <div class="options">
+                <input type="radio" name="q7" value="a"> A) A type of persistent storage<br>
+                <input type="radio" name="q7" value="b"> B) A workload API object used to manage stateful applications<br>
+                <input type="radio" name="q7" value="c"> C) A database configuration<br>
+                <input type="radio" name="q7" value="d"> D) A network state manager
+            </div>
+            <div class="explanation">
+                StatefulSet is a workload API object used to manage stateful applications, providing guarantees about the ordering and uniqueness of Pods.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>8. What is an Ingress?</p>
+            <div class="options">
+                <input type="radio" name="q8" value="a"> A) A network entry point<br>
+                <input type="radio" name="q8" value="b"> B) An API object that manages external access to services in a cluster<br>
+                <input type="radio" name="q8" value="c"> C) A storage system<br>
+                <input type="radio" name="q8" value="d"> D) A container runtime
+            </div>
+            <div class="explanation">
+                Ingress is an API object that manages external access to services in a cluster, typically providing HTTP routing rules.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>9. What is a DaemonSet?</p>
+            <div class="options">
+                <input type="radio" name="q9" value="a"> A) A background process<br>
+                <input type="radio" name="q9" value="b"> B) A type of container<br>
+                <input type="radio" name="q9" value="c"> C) A workload that ensures all nodes run a copy of a Pod<br>
+                <input type="radio" name="q9" value="d"> D) A monitoring system
+            </div>
+            <div class="explanation">
+                A DaemonSet ensures that all (or some) nodes run a copy of a Pod, useful for running cluster-wide services like logging or monitoring agents.
+            </div>
+        </div>
+
+        <div class="question">
+            <p>10. What is a PersistentVolume?</p>
+            <div class="options">
+                <input type="radio" name="q10" value="a"> A) A piece of storage in the cluster<br>
+                <input type="radio" name="q10" value="b"> B) A type of container storage<br>
+                <input type="radio" name="q10" value="c"> C) A backup system<br>
+                <input type="radio" name="q10" value="d"> D) A memory management system
+            </div>
+            <div class="explanation">
+                A PersistentVolume is a piece of storage in the cluster that has been provisioned by an administrator or dynamically provisioned using Storage Classes.
+            </div>
+        </div>
     </div>
-    
+
+    <button id="submitBtn" disabled>Submit Quiz</button>
+    <div id="score"></div>
+
     <script>
-        const questions = [
-            { q: "What is the primary purpose of Kubernetes?", options: ["Virtualization", "Container Orchestration", "Cloud Storage"], correct: 1, explanation: "Kubernetes is used for container orchestration." },
-            { q: "What is a Kubernetes Pod?", options: ["A single container", "The smallest deployable unit", "A type of node"], correct: 1, explanation: "A Pod is the smallest deployable unit in Kubernetes." },
-            { q: "Which component manages the Kubernetes cluster?", options: ["kubectl", "kube-apiserver", "kubelet"], correct: 1, explanation: "kube-apiserver is responsible for managing the cluster." },
-            { q: "What is the purpose of a Kubernetes Service?", options: ["Manage storage", "Expose a set of pods", "Monitor logs"], correct: 1, explanation: "A Kubernetes Service exposes a set of Pods to the network." },
-            { q: "What does a Kubernetes Deployment do?", options: ["Manages pod replicas", "Creates network rules", "Stores secrets"], correct: 0, explanation: "A Deployment manages replica sets to ensure the desired number of pods are running." },
-            { q: "What is the function of a ConfigMap in Kubernetes?", options: ["Store configuration data", "Store secrets", "Manage network policies"], correct: 0, explanation: "A ConfigMap is used to store non-sensitive configuration data." },
-            { q: "How does Kubernetes perform load balancing?", options: ["Using Ingress", "Using NodePorts", "Using Services"], correct: 2, explanation: "Kubernetes Services provide built-in load balancing for pods." },
-            { q: "Which Kubernetes object is responsible for auto-scaling pods?", options: ["ReplicaSet", "HPA", "DaemonSet"], correct: 1, explanation: "The Horizontal Pod Autoscaler (HPA) automatically scales the number of pods." },
-            { q: "What is the role of a Kubernetes Ingress?", options: ["Control internal traffic", "Expose HTTP and HTTPS routes", "Manage persistent storage"], correct: 1, explanation: "Ingress manages external access to services over HTTP and HTTPS." },
-            { q: "Which component schedules pods in Kubernetes?", options: ["Controller Manager", "kube-scheduler", "kubelet"], correct: 1, explanation: "kube-scheduler is responsible for assigning pods to nodes." },
-            { q: "What is a StatefulSet used for?", options: ["Managing stateless applications", "Managing stateful applications", "Managing networking policies"], correct: 1, explanation: "A StatefulSet manages stateful applications, ensuring stable network identities and storage." },
-            { q: "Which command is used to get logs of a running pod?", options: ["kubectl logs", "kubectl describe", "kubectl exec"], correct: 0, explanation: "The 'kubectl logs' command retrieves logs from a running pod." },
-            { q: "What is the default networking model in Kubernetes?", options: ["Flat network", "Overlay network", "Cluster network"], correct: 2, explanation: "Kubernetes uses a cluster-wide networking model where all pods can communicate." },
-            { q: "What is the purpose of a PersistentVolume (PV)?", options: ["Temporary storage", "Persistent storage", "Pod scheduling"], correct: 1, explanation: "A PersistentVolume (PV) provides persistent storage for Kubernetes workloads." },
-            { q: "Which tool is commonly used for Kubernetes monitoring?", options: ["Prometheus", "Docker", "Kafka"], correct: 0, explanation: "Prometheus is a popular monitoring tool for Kubernetes metrics." }
-        ];
-        
-        function loadQuestions() {
-            const container = document.getElementById("questionsContainer");
-            container.innerHTML = ''; // Clear the container before loading questions
-            questions.forEach((item, index) => {
-                const div = document.createElement("div");
-                div.classList.add("question");
-                div.innerHTML = `<p>${index + 1}. ${item.q}</p>` +
-                    item.options.map((opt, i) => `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`).join('') +
-                    `<p class="explanation">Correct answer: ${item.options[item.correct]}. ${item.explanation}</p>`;
-                container.appendChild(div);
-            });
+        const correctAnswers = {
+            q1: 'b',
+            q2: 'b',
+            q3: 'c',
+            q4: 'b',
+            q5: 'c',
+            q6: 'a',
+            q7: 'b',
+            q8: 'b',
+            q9: 'c',
+            q10: 'a'
+        };
+
+        // Enable submit button when all questions are answered
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', checkAllAnswered);
+        });
+
+        function checkAllAnswered() {
+            const totalQuestions = 10;
+            let answeredQuestions = 0;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                if (document.querySelector(`input[name="q${i}"]:checked`)) {
+                    answeredQuestions++;
+                }
+            }
+
+            document.getElementById('submitBtn').disabled = answeredQuestions !== totalQuestions;
         }
-        
-        function calculateScore() {
+
+        // Handle submit
+        document.getElementById('submitBtn').addEventListener('click', () => {
             let score = 0;
-            questions.forEach((item, index) => {
-                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
-                const questionDiv = document.querySelectorAll(".question")[index];
-                const explanation = questionDiv.querySelector(".explanation");
-                
-                if (selectedOption) {
-                    if (parseInt(selectedOption.value) === item.correct) {
-                        questionDiv.classList.add("correct");
-                        score++;
-                    } else {
-                        questionDiv.classList.add("incorrect");
-                    }
-                    explanation.style.display = "block";
+            const questions = document.querySelectorAll('.question');
+
+            questions.forEach((question, index) => {
+                const questionNumber = index + 1;
+                const selectedAnswer = document.querySelector(`input[name="q${questionNumber}"]:checked`).value;
+                const explanation = question.querySelector('.explanation');
+
+                if (selectedAnswer === correctAnswers[`q${questionNumber}`]) {
+                    score++;
+                } else {
+                    explanation.style.display = 'block';
                 }
             });
-            document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}!`;
-        }
-        
-        // Ensure loadQuestions is called when the DOM is fully loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            loadQuestions();
+
+            document.getElementById('score').style.display = 'block';
+            document.getElementById('score').innerHTML = `Your score: ${score} out of 10`;
+            document.getElementById('submitBtn').disabled = true;
         });
     </script>
 </body>
