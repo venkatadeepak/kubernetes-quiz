@@ -14,6 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow-y: auto;
         }
         .container {
             background: white;
@@ -29,6 +30,17 @@
         }
         .question {
             margin-bottom: 15px;
+        }
+        .correct {
+            background-color: #c8e6c9;
+        }
+        .incorrect {
+            background-color: #ffcdd2;
+        }
+        .explanation {
+            display: none;
+            font-size: 14px;
+            color: #333;
         }
         #result {
             font-weight: bold;
@@ -53,82 +65,66 @@
 </head>
 <body>
     <div class="container">
-        <h2>Kubernetes Basic Quiz for Pavani</h2>
+        <h2>Kubernetes Basic Quiz</h2>
         <form id="quizForm">
-            <div class="question">
-                <p>1. What is the primary purpose of Kubernetes?</p>
-                <input type="radio" name="q1" value="a"> a) Virtualization<br>
-                <input type="radio" name="q1" value="b"> b) Container Orchestration<br>
-                <input type="radio" name="q1" value="c"> c) Cloud Storage<br>
-            </div>
-            
-            <div class="question">
-                <p>2. What is a Kubernetes Pod?</p>
-                <input type="radio" name="q2" value="a"> a) A single container<br>
-                <input type="radio" name="q2" value="b"> b) The smallest deployable unit<br>
-                <input type="radio" name="q2" value="c"> c) A type of node<br>
-            </div>
-            
-            <div class="question">
-                <p>3. Which component manages the Kubernetes cluster?</p>
-                <input type="radio" name="q3" value="a"> a) Kubelet<br>
-                <input type="radio" name="q3" value="b"> b) Kube-controller-manager<br>
-                <input type="radio" name="q3" value="c"> c) Kube-apiserver<br>
-            </div>
-            
-            <div class="question">
-                <p>4. What command is used to view running pods?</p>
-                <input type="radio" name="q4" value="a"> a) kubectl get pods<br>
-                <input type="radio" name="q4" value="b"> b) kubectl list pods<br>
-                <input type="radio" name="q4" value="c"> c) kubectl show pods<br>
-            </div>
-            
-            <div class="question">
-                <p>5. What is a Kubernetes Service?</p>
-                <input type="radio" name="q5" value="a"> a) A networking abstraction<br>
-                <input type="radio" name="q5" value="b"> b) A storage solution<br>
-                <input type="radio" name="q5" value="c"> c) A deployment strategy<br>
-            </div>
-            
-            <div class="question">
-                <p>6. What does kube-scheduler do?</p>
-                <input type="radio" name="q6" value="a"> a) Schedules pods to nodes<br>
-                <input type="radio" name="q6" value="b"> b) Manages persistent storage<br>
-                <input type="radio" name="q6" value="c"> c) Handles networking<br>
-            </div>
-            
-            <div class="question">
-                <p>7. What is a ReplicaSet?</p>
-                <input type="radio" name="q7" value="a"> a) Ensures a specified number of pod replicas are running<br>
-                <input type="radio" name="q7" value="b"> b) A way to update deployments<br>
-                <input type="radio" name="q7" value="c"> c) A type of service<br>
-            </div>
-            
-            <div class="question">
-                <p>8. Which command applies a configuration file to a cluster?</p>
-                <input type="radio" name="q8" value="a"> a) kubectl apply -f filename.yaml<br>
-                <input type="radio" name="q8" value="b"> b) kubectl create -f filename.yaml<br>
-                <input type="radio" name="q8" value="c"> c) kubectl deploy -f filename.yaml<br>
-            </div>
-            
-            <div class="question">
-                <p>9. What is the default network communication model in Kubernetes?</p>
-                <input type="radio" name="q9" value="a"> a) Overlay Network<br>
-                <input type="radio" name="q9" value="b"> b) Flat Network Model<br>
-                <input type="radio" name="q9" value="c"> c) Peer-to-Peer<br>
-            </div>
-            
-            <div class="question">
-                <p>10. What is Helm in Kubernetes?</p>
-                <input type="radio" name="q10" value="a"> a) A package manager<br>
-                <input type="radio" name="q10" value="b"> b) A monitoring tool<br>
-                <input type="radio" name="q10" value="c"> c) A container runtime<br>
-            </div>
-            
+            <div id="questionsContainer"></div>
             <button type="button" onclick="calculateScore()">Submit</button>
         </form>
-        
         <p id="result"></p>
     </div>
+    
+    <script>
+        const questions = [
+            { q: "What is the primary purpose of Kubernetes?", options: ["Virtualization", "Container Orchestration", "Cloud Storage"], correct: 1, explanation: "Kubernetes is used for container orchestration." },
+            { q: "What is a Kubernetes Pod?", options: ["A single container", "The smallest deployable unit", "A type of node"], correct: 1, explanation: "A Pod is the smallest deployable unit in Kubernetes." },
+            { q: "Which component manages the Kubernetes cluster?", options: ["kubectl", "kube-apiserver", "kubelet"], correct: 1, explanation: "kube-apiserver is responsible for managing the cluster." },
+            { q: "What is the purpose of a Kubernetes Service?", options: ["Manage storage", "Expose a set of pods", "Monitor logs"], correct: 1, explanation: "A Kubernetes Service exposes a set of Pods to the network." },
+            { q: "What does a Kubernetes Deployment do?", options: ["Manages pod replicas", "Creates network rules", "Stores secrets"], correct: 0, explanation: "A Deployment manages replica sets to ensure the desired number of pods are running." },
+            { q: "What is the function of a ConfigMap in Kubernetes?", options: ["Store configuration data", "Store secrets", "Manage network policies"], correct: 0, explanation: "A ConfigMap is used to store non-sensitive configuration data." },
+            { q: "How does Kubernetes perform load balancing?", options: ["Using Ingress", "Using NodePorts", "Using Services"], correct: 2, explanation: "Kubernetes Services provide built-in load balancing for pods." },
+            { q: "Which Kubernetes object is responsible for auto-scaling pods?", options: ["ReplicaSet", "HPA", "DaemonSet"], correct: 1, explanation: "The Horizontal Pod Autoscaler (HPA) automatically scales the number of pods." },
+            { q: "What is the role of a Kubernetes Ingress?", options: ["Control internal traffic", "Expose HTTP and HTTPS routes", "Manage persistent storage"], correct: 1, explanation: "Ingress manages external access to services over HTTP and HTTPS." },
+            { q: "Which component schedules pods in Kubernetes?", options: ["Controller Manager", "kube-scheduler", "kubelet"], correct: 1, explanation: "kube-scheduler is responsible for assigning pods to nodes." },
+            { q: "What is a StatefulSet used for?", options: ["Managing stateless applications", "Managing stateful applications", "Managing networking policies"], correct: 1, explanation: "A StatefulSet manages stateful applications, ensuring stable network identities and storage." },
+            { q: "Which command is used to get logs of a running pod?", options: ["kubectl logs", "kubectl describe", "kubectl exec"], correct: 0, explanation: "The 'kubectl logs' command retrieves logs from a running pod." },
+            { q: "What is the default networking model in Kubernetes?", options: ["Flat network", "Overlay network", "Cluster network"], correct: 2, explanation: "Kubernetes uses a cluster-wide networking model where all pods can communicate." },
+            { q: "What is the purpose of a PersistentVolume (PV)?", options: ["Temporary storage", "Persistent storage", "Pod scheduling"], correct: 1, explanation: "A PersistentVolume (PV) provides persistent storage for Kubernetes workloads." },
+            { q: "Which tool is commonly used for Kubernetes monitoring?", options: ["Prometheus", "Docker", "Kafka"], correct: 0, explanation: "Prometheus is a popular monitoring tool for Kubernetes metrics." },
+        ];
+        
+        function loadQuestions() {
+            const container = document.getElementById("questionsContainer");
+            questions.forEach((item, index) => {
+                const div = document.createElement("div");
+                div.classList.add("question");
+                div.innerHTML = `<p>${index + 1}. ${item.q}</p>` +
+                    item.options.map((opt, i) => `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`).join('') +
+                    `<p class="explanation">Correct answer: ${item.options[item.correct]}. ${item.explanation}</p>`;
+                container.appendChild(div);
+            });
+        }
+        
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((item, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                const questionDiv = document.querySelectorAll(".question")[index];
+                const explanation = questionDiv.querySelector(".explanation");
+                
+                if (selectedOption) {
+                    if (parseInt(selectedOption.value) === item.correct) {
+                        questionDiv.classList.add("correct");
+                        score++;
+                    } else {
+                        questionDiv.classList.add("incorrect");
+                    }
+                    explanation.style.display = "block";
+                }
+            });
+            document.getElementById("result").innerText = `You scored ${score} out of ${questions.length}!`;
+        }
+        
+        loadQuestions();
+    </script>
 </body>
 </html>
