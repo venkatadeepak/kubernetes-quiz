@@ -30,8 +30,7 @@
         }
         .question {
             margin-bottom: 15px;
-        }
-        .correct {
+        {
             background-color: #c8e6c9;
         }
         .incorrect {
@@ -89,11 +88,12 @@
             { q: "Which command is used to get logs of a running pod?", options: ["kubectl logs", "kubectl describe", "kubectl exec"], correct: 0, explanation: "The 'kubectl logs' command retrieves logs from a running pod." },
             { q: "What is the default networking model in Kubernetes?", options: ["Flat network", "Overlay network", "Cluster network"], correct: 2, explanation: "Kubernetes uses a cluster-wide networking model where all pods can communicate." },
             { q: "What is the purpose of a PersistentVolume (PV)?", options: ["Temporary storage", "Persistent storage", "Pod scheduling"], correct: 1, explanation: "A PersistentVolume (PV) provides persistent storage for Kubernetes workloads." },
-            { q: "Which tool is commonly used for Kubernetes monitoring?", options: ["Prometheus", "Docker", "Kafka"], correct: 0, explanation: "Prometheus is a popular monitoring tool for Kubernetes metrics." },
+            { q: "Which tool is commonly used for Kubernetes monitoring?", options: ["Prometheus", "Docker", "Kafka"], correct: 0, explanation: "Prometheus is a popular monitoring tool for Kubernetes metrics." }
         ];
         
         function loadQuestions() {
             const container = document.getElementById("questionsContainer");
+            container.innerHTML = ''; // Clear the container before loading questions
             questions.forEach((item, index) => {
                 const div = document.createElement("div");
                 div.classList.add("question");
